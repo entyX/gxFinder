@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 import { existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { crawl, buildIndex, createApi, handleApi, snapshotOf } from './lib/core.js';
+import { crawl, buildIndex, createApi, handleApi, snapshotOf, fetchImage } from './lib/core.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(ROOT, 'public');
@@ -88,6 +88,12 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   const p = url.pathname;
   try {
+    if (p === '/api/img') {
+      const img = await fetchImage(url.searchParams.get('url') || '');
+      if (!img) return send(res, 400, { error: 'bad_image' });
+      res.writeHead(200, { 'Content-Type': img.type, 'Cache-Control': 'public, max-age=86400' });
+      return res.end(img.body);
+    }
     if (p.startsWith('/api/')) {
       if (!api) return send(res, p === '/api/meta' ? 200 : 503, { ready: false, progress });
       if (p === '/api/meta') return send(res, 200, api.meta(progress));

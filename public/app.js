@@ -1,4 +1,5 @@
 // gxFinder front end — vanilla ES modules, hash routing.
+import { openShare } from './share.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const main = $('#main');
@@ -443,6 +444,7 @@ async function renderGame(sid) {
             </div>
             <div class="ghero__actions">
               <a class="btn btn--primary" href="${esc(g.url)}" target="_blank" rel="noopener">Play on GX.games ${extIcon}</a>
+              <button class="btn" type="button" id="share-btn">${shareIcon}Share card</button>
               ${g.studio ? `<a class="btn" href="${homeHref({ studio: g.studio.id })}">All games by this studio</a>` : ''}
             </div>
           </div>
@@ -524,8 +526,10 @@ async function renderGame(sid) {
         </div>
       </section>
     </article>`;
+  $('#share-btn').addEventListener('click', () => openShare(r));
 }
 
+const shareIcon = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="4.5" y="4.5" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 11V2.5H11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
 const extIcon = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
 
 function gameSkeleton() {

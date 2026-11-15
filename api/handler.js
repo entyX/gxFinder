@@ -1,7 +1,7 @@
 // Vercel function: serves every /api/* route from the catalogue baked in at build time.
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { buildIndex, createApi, handleApi } from '../lib/core.js';
+import { buildIndex, createApi, handleApi, fetchImage } from '../lib/core.js';
 
 let api = null;
 
@@ -43,6 +43,14 @@ export default async function handler(req, res) {
     url.searchParams.delete('route');
     const pathname = route != null ? `/api/${route}` : url.pathname;
     if (pathname === '/api/cron') return await cron(req, res);
+    if (pathname === '/api/img') {
+      const img = await fetchImage(url.searchParams.get('url') || '');
+      if (!img) return send(res, 400, { error: 'bad_image' });
+      res.statusCode = 200;
+      res.setHeader('Content-Type', img.type);
+      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800');
+      return res.end(img.body);
+    }
     const [status, body] = await handleApi(load(), pathname, Object.fromEntries(url.searchParams));
     // Data only changes per deploy, so let Vercel's edge cache absorb repeat requests.
     send(res, status, body, status === 200 ? 'public, s-maxage=300, stale-while-revalidate=3600' : 'no-store');

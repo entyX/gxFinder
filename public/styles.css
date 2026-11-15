@@ -366,6 +366,33 @@ a.rv:hover { background: var(--bg-raise); }
 .facts dt { color: var(--muted); }
 .facts dd { margin: 0; color: var(--text); }
 
+/* ------------------------------------------------------------ share dialog */
+
+.share {
+  width: min(760px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0;
+  background: var(--panel); color: var(--text); border: 1px solid var(--line-2); border-radius: 6px;
+  box-shadow: 0 40px 120px -20px rgba(0, 0, 0, 0.9);
+}
+.share::backdrop { background: rgba(5, 4, 8, 0.72); backdrop-filter: blur(4px); }
+.share[open] { animation: share-in .18s ease-out; }
+@keyframes share-in { from { opacity: 0; transform: translateY(8px) scale(.985); } }
+.share__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px 14px; }
+.share__head h2 { margin: 0; font: 800 26px/1.1 var(--display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.share__close { flex: none; width: 34px; height: 34px; border: 0; border-radius: 4px; background: none; color: var(--text-2); display: grid; place-items: center; }
+.share__close:hover { background: var(--panel-2); color: var(--text); }
+.share__preview { position: relative; margin: 0 20px; aspect-ratio: 1200 / 630; background: var(--bg); border: 1px solid var(--line); overflow: hidden; }
+.share__preview img { width: 100%; height: 100%; display: block; }
+.share__actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 20px; }
+.share__actions .btn { height: 40px; padding: 0 16px; font-size: 14px; }
+.share__actions .btn--primary { padding: 0 20px; }
+.btn.is-done { border-color: var(--up); color: var(--up); }
+.btn--primary.is-done { background: var(--up); border-color: var(--up); color: #062b15; }
+.btn.is-failed { border-color: var(--down); color: var(--down); }
+.share__text { margin: 0 20px 20px; border-top: 1px solid var(--line); padding-top: 12px; color: var(--text-2); font-size: 13.5px; }
+.share__text summary { cursor: pointer; color: var(--muted); }
+.share__text summary:hover { color: var(--text); }
+.share__text pre { margin: 10px 0 0; padding: 14px; background: var(--bg); border: 1px solid var(--line); white-space: pre-wrap; word-break: break-word; font: 400 13px/1.6 var(--body); color: var(--text-2); }
+
 /* ------------------------------------------------------------ footer */
 
 .footer { border-top: 1px solid var(--line); margin-top: 56px; }
@@ -410,6 +437,7 @@ a.rv:hover { background: var(--bg-raise); }
   .rv__thumb { width: 64px; }
   .rv__gap { grid-column: 3; text-align: left; }
   .search__key { display: none; }
+  .share__actions .btn { flex: 1 1 calc(50% - 4px); }
   .table-meta { flex-direction: column; align-items: stretch; gap: 12px; }
   .section__head { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
