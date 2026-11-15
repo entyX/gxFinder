@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>gxFinder — GX.games standings</title>
+  <meta name="description" content="Live rankings and analytics for every game on GX.games.">
+  <meta name="theme-color" content="#09080C">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#/" aria-label="gxFinder home">
+        <svg class="brand__mark" viewBox="0 0 28 28" aria-hidden="true"><path d="M0 0h21l7 7v21H7L0 21z" fill="currentColor"/><path d="M8 9h12M8 14h8M8 19h10" stroke="#09080C" stroke-width="2.6"/></svg>
+        <span class="brand__word">gx<b>Finder</b></span>
+      </a>
+      <div class="search" role="combobox" aria-haspopup="listbox" aria-owns="search-results" aria-expanded="false">
+        <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="search" type="search" autocomplete="off" spellcheck="false" placeholder="Search any game or studio" aria-label="Search games" aria-autocomplete="list" aria-controls="search-results">
+        <kbd class="search__key" aria-hidden="true">/</kbd>
+        <div id="search-results" class="search__results" role="listbox" hidden></div>
+      </div>
+      <div class="freshness" id="freshness" aria-live="polite"></div>
+    </div>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <footer class="footer">
+    <div class="footer__inner">
+      <p>gxFinder reads public data from GX.games and isn't affiliated with Opera or GX.games.</p>
+      <p>Stats refresh every 30 minutes. Trend lines build from snapshots taken every 6 hours.</p>
+    </div>
+  </footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
