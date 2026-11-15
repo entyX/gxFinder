@@ -1,3 +1,5 @@
 node_modules
 data
+public/history.json
+.vercel
 .DS_Store
