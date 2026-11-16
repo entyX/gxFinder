@@ -1,6 +1,31 @@
 // gxFinder front end — vanilla ES modules, hash routing.
 import { openShare } from './share.js';
 
+// ------------------------------------------------------------ analytics
+// Vercel Web Analytics, loaded the same way @vercel/analytics' inject() does.
+// Auto-tracking only sees pathname changes, so hash routes report pageviews manually.
+const analytics = !/^(localhost|127\.|\[::1\]|0\.0\.0\.0)/.test(location.hostname);
+if (analytics) {
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  const s = document.createElement('script');
+  s.src = '/_vercel/insights/script.js';
+  s.defer = true;
+  s.dataset.sdkn = '@vercel/analytics';
+  s.dataset.sdkv = '1.6.1';
+  s.dataset.disableAutoTrack = '1';
+  document.head.append(s);
+}
+let lastTracked = null;
+function trackView(path, params) {
+  if (!analytics) return;
+  const isGame = path.startsWith('/game/');
+  // Count a new view per page, or when the board/category/studio changes (not per keystroke)
+  const view = isGame ? path : `/${new URLSearchParams(Object.entries(params).filter(([k, v]) => v && k !== 'q')).toString().replace(/^(?=.)/, '?')}`;
+  if (view === lastTracked) return;
+  lastTracked = view;
+  window.va('pageview', { route: isGame ? '/game/[id]' : '/', path: view });
+}
+
 const $ = (sel, root = document) => root.querySelector(sel);
 const main = $('#main');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -99,6 +124,7 @@ async function route() {
     const m = path.match(/^\/game\/([\w-]+)/);
     if (m) await renderGame(m[1]);
     else await renderHome(params, path === lastPath);
+    trackView(path, params);
   } catch (err) {
     console.error(err);
     renderError(err);
